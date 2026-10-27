@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background Linear Gradient -->
+    <path android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="54"
+                android:startY="0"
+                android:endX="54"
+                android:endY="108"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#FF1C1838" />
+                <item android:offset="0.5" android:color="#FF16132C" />
+                <item android:offset="1.0" android:color="#FF0E0C1C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Subtle Ambient Corner Glows -->
+    <path
+        android:pathData="M15,15m-18,0a18,18 0 1,0 36,0a18,18 0 1,0 -36,0"
+        android:fillColor="#1500D2D3" />
+    <path
+        android:pathData="M93,20m-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0"
+        android:fillColor="#15FF4B6E" />
+    <path
+        android:pathData="M18,90m-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0"
+        android:fillColor="#15A55EEA" />
+    <path
+        android:pathData="M90,90m-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0"
+        android:fillColor="#12FFC700" />
+
+    <!-- Subtle Rounded Grid Outer Frame -->
+    <path
+        android:pathData="M32,18h44a14,14 0 0 1 14,14v44a14,14 0 0 1 -14,14h-44a14,14 0 0 1 -14,-14v-44a14,14 0 0 1 14,-14z"
+        android:strokeColor="#18FFFFFF"
+        android:strokeWidth="1"
+        android:fillColor="#00000000" />
+</vector>

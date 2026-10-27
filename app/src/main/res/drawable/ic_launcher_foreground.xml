@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Shadow TL -->
+    <path android:fillColor="#50000000" android:pathData="M 35.5,32.0 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Shadow TR -->
+    <path android:fillColor="#50000000" android:pathData="M 61.5,32.0 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Shadow BL -->
+    <path android:fillColor="#50000000" android:pathData="M 35.5,58.0 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Shadow BR -->
+    <path android:fillColor="#50000000" android:pathData="M 61.5,58.0 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Bevel TL -->
+    <path android:fillColor="#FFB4193C" android:pathData="M 35.5,31.4 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Bevel TR -->
+    <path android:fillColor="#FFBE8700" android:pathData="M 61.5,31.4 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Bevel BL -->
+    <path android:fillColor="#FF008C8F" android:pathData="M 35.5,57.4 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Bevel BR -->
+    <path android:fillColor="#FF6E2DB0" android:pathData="M 61.5,57.4 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Face TL -->
+    <path android:fillColor="#FFFF4B6E" android:pathData="M 35.5,30 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Face TR -->
+    <path android:fillColor="#FFFFC700" android:pathData="M 61.5,30 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Face BL -->
+    <path android:fillColor="#FF00D2D3" android:pathData="M 35.5,56 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Face BR -->
+    <path android:fillColor="#FFA55EEA" android:pathData="M 61.5,56 h 11.0 a 5.5,5.5 0 0 1 5.5,5.5 v 11.0 a 5.5,5.5 0 0 1 -5.5,5.5 h -11.0 a 5.5,5.5 0 0 1 -5.5,-5.5 v -11.0 a 5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <!-- Shine TL -->
+    <path android:fillColor="#65FFFFFF" android:pathData="M 35.6,32.0 h 10.8 a 3.1,3.1 0 0 1 3.1,3.1 v 0.0 a 3.1,3.1 0 0 1 -3.1,3.1 h -10.8 a 3.1,3.1 0 0 1 -3.1,-3.1 v -0.0 a 3.1,3.1 0 0 1 3.1,-3.1 z" />
+    <path android:fillColor="#80FFFFFF" android:pathData="M 35.6,32.8 h 4.8 a 1.6,1.6 0 0 1 1.6,1.6 v 0.0 a 1.6,1.6 0 0 1 -1.6,1.6 h -4.8 a 1.6,1.6 0 0 1 -1.6,-1.6 v -0.0 a 1.6,1.6 0 0 1 1.6,-1.6 z" />
+    <!-- Shine TR -->
+    <path android:fillColor="#65FFFFFF" android:pathData="M 61.6,32.0 h 10.8 a 3.1,3.1 0 0 1 3.1,3.1 v 0.0 a 3.1,3.1 0 0 1 -3.1,3.1 h -10.8 a 3.1,3.1 0 0 1 -3.1,-3.1 v -0.0 a 3.1,3.1 0 0 1 3.1,-3.1 z" />
+    <path android:fillColor="#80FFFFFF" android:pathData="M 61.6,32.8 h 4.8 a 1.6,1.6 0 0 1 1.6,1.6 v 0.0 a 1.6,1.6 0 0 1 -1.6,1.6 h -4.8 a 1.6,1.6 0 0 1 -1.6,-1.6 v -0.0 a 1.6,1.6 0 0 1 1.6,-1.6 z" />
+    <!-- Shine BL -->
+    <path android:fillColor="#65FFFFFF" android:pathData="M 35.6,58.0 h 10.8 a 3.1,3.1 0 0 1 3.1,3.1 v 0.0 a 3.1,3.1 0 0 1 -3.1,3.1 h -10.8 a 3.1,3.1 0 0 1 -3.1,-3.1 v -0.0 a 3.1,3.1 0 0 1 3.1,-3.1 z" />
+    <path android:fillColor="#80FFFFFF" android:pathData="M 35.6,58.8 h 4.8 a 1.6,1.6 0 0 1 1.6,1.6 v 0.0 a 1.6,1.6 0 0 1 -1.6,1.6 h -4.8 a 1.6,1.6 0 0 1 -1.6,-1.6 v -0.0 a 1.6,1.6 0 0 1 1.6,-1.6 z" />
+    <!-- Shine BR -->
+    <path android:fillColor="#65FFFFFF" android:pathData="M 61.6,58.0 h 10.8 a 3.1,3.1 0 0 1 3.1,3.1 v 0.0 a 3.1,3.1 0 0 1 -3.1,3.1 h -10.8 a 3.1,3.1 0 0 1 -3.1,-3.1 v -0.0 a 3.1,3.1 0 0 1 3.1,-3.1 z" />
+    <path android:fillColor="#80FFFFFF" android:pathData="M 61.6,58.8 h 4.8 a 1.6,1.6 0 0 1 1.6,1.6 v 0.0 a 1.6,1.6 0 0 1 -1.6,1.6 h -4.8 a 1.6,1.6 0 0 1 -1.6,-1.6 v -0.0 a 1.6,1.6 0 0 1 1.6,-1.6 z" />
+    <!-- Sparkles -->
+    <path android:fillColor="#FFFFD700" android:pathData="M 83,20.5 L 84.1,25 L 83,29.5 L 81.9,25 Z M 78.5,25 L 83,26.1 L 87.5,25 L 83,23.9 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M 83,25m-0.8,0a0.8,0.8 0 1,0 1.6,0a0.8,0.8 0 1,0 -1.6,0" />
+    <path android:fillColor="#FF00D2D3" android:pathData="M 25,79.0 L 26.0,83 L 25,87.0 L 24.0,83 Z M 21.0,83 L 25,84.0 L 29.0,83 L 25,82.0 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M 25,83m-0.8,0a0.8,0.8 0 1,0 1.6,0a0.8,0.8 0 1,0 -1.6,0" />
+</vector>
