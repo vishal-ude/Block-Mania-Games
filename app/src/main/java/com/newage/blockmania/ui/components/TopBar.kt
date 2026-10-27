@@ -54,10 +54,10 @@ fun TopBar(
     onCompetitiveHubClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    // Smooth counter animation for score changes
+    // Smooth counter animation for score changes, snapping immediately to 0 on reset
     val animatedScore by animateIntAsState(
         targetValue = score,
-        animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing),
+        animationSpec = if (score == 0) androidx.compose.animation.core.snap() else tween(durationMillis = 350, easing = FastOutSlowInEasing),
         label = "scoreRoll"
     )
 

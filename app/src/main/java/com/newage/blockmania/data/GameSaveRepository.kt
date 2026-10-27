@@ -27,7 +27,14 @@ class GameSaveRepository(context: Context) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun hasSavedGame(): Boolean {
-        return prefs.getBoolean(KEY_HAS_SAVED_GAME, false)
+        if (!prefs.getBoolean(KEY_HAS_SAVED_GAME, false)) return false
+        val boardStr = prefs.getString(KEY_SAVED_BOARD, null)
+        val piecesStr = prefs.getString(KEY_SAVED_PIECES, null)
+        if (boardStr.isNullOrEmpty() || piecesStr.isNullOrEmpty()) {
+            clearSavedGame()
+            return false
+        }
+        return true
     }
 
     fun saveGame(
@@ -37,8 +44,9 @@ class GameSaveRepository(context: Context) {
         comboStreak: Int,
         canUndo: Boolean
     ) {
-        // Do not save if pieces are empty or exhausted
-        if (pieces.isEmpty() || pieces.all { it.isUsed }) {
+        val unused = pieces.filter { !it.isUsed }
+        // Never save if pieces are empty, exhausted, or none can fit anywhere on the board (game over)
+        if (unused.isEmpty() || unused.none { com.newage.blockmania.engine.GameEngine.canPieceFitAnywhere(board, it) }) {
             clearSavedGame()
             return
         }
@@ -72,6 +80,13 @@ class GameSaveRepository(context: Context) {
 
             val board = deserializeBoard(boardStr) ?: return null
             val pieces = deserializePieces(piecesStr)
+
+            // Validate that loaded pieces actually contain at least one legal move
+            val unused = pieces.filter { !it.isUsed }
+            if (unused.isEmpty() || unused.none { com.newage.blockmania.engine.GameEngine.canPieceFitAnywhere(board, it) }) {
+                clearSavedGame()
+                return null
+            }
 
             return SavedGameSession(
                 board = board,

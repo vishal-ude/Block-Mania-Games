@@ -95,12 +95,28 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        gameViewModel.pauseGame()
+    }
 }
 
 @Composable
 fun BlockManiaApp(viewModel: GameViewModel) {
     val gameState by viewModel.gameState.collectAsState()
     val isGameActive = gameState.screenState != ScreenState.START
+
+    // Ergonomic back gesture handling: dismisses modals, pauses active game, or returns to home
+    androidx.activity.compose.BackHandler(enabled = gameState.showThemeDialog || gameState.showCompetitiveHub || isGameActive) {
+        when {
+            gameState.showThemeDialog -> viewModel.closeThemeDialog()
+            gameState.showCompetitiveHub -> viewModel.closeCompetitiveHub()
+            gameState.screenState == ScreenState.GAME_OVER -> viewModel.goToHome()
+            gameState.screenState == ScreenState.PAUSED -> viewModel.goToHome()
+            gameState.screenState == ScreenState.PLAYING -> viewModel.pauseGame()
+        }
+    }
 
     AnimatedContent(
         targetState = isGameActive,
@@ -111,8 +127,11 @@ fun BlockManiaApp(viewModel: GameViewModel) {
         label = "screenTransition"
     ) { active ->
         if (!active) {
-            val hasActiveGame = (gameState.currentPieces.isNotEmpty() &&
-                    gameState.currentPieces.any { !it.isUsed }) || gameState.hasSavedGame
+            val hasActiveGame = gameState.hasSavedGame || (
+                gameState.screenState != ScreenState.GAME_OVER &&
+                gameState.currentPieces.isNotEmpty() &&
+                gameState.currentPieces.any { !it.isUsed && it.canFit }
+            )
 
             com.newage.blockmania.ui.screens.StartScreen(
                 bestScore = gameState.bestScore,

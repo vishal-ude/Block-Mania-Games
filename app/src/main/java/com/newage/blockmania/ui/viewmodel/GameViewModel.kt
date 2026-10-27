@@ -96,9 +96,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     fun startGame(resumeIfActive: Boolean = true) {
         val current = _gameState.value
-        val hasActiveInMemory = current.currentPieces.isNotEmpty() &&
-                current.currentPieces.any { !it.isUsed } &&
-                current.screenState != ScreenState.GAME_OVER
+        val hasActiveInMemory = current.screenState != ScreenState.GAME_OVER &&
+                current.currentPieces.isNotEmpty() &&
+                current.currentPieces.any { !it.isUsed && it.canFit }
 
         if (resumeIfActive && hasActiveInMemory) {
             _gameState.update { it.copy(screenState = ScreenState.PLAYING) }
@@ -110,23 +110,28 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             val savedSession = gameSaveRepository.loadGame()
             if (savedSession != null) {
                 val fittedPieces = GameEngine.updatePiecesFitStatus(savedSession.board, savedSession.pieces)
-                previousMove = null
-                _gameState.update {
-                    it.copy(
-                        screenState = ScreenState.PLAYING,
-                        board = savedSession.board,
-                        currentPieces = fittedPieces,
-                        score = savedSession.score,
-                        comboStreak = savedSession.comboStreak,
-                        canUndo = savedSession.canUndo,
-                        isNewHighScore = false,
-                        activeLineClear = null,
-                        activeComboPopup = null,
-                        lastPlacement = null,
-                        hasSavedGame = true
-                    )
+                val hasPlayablePiece = fittedPieces.any { !it.isUsed && it.canFit }
+                if (hasPlayablePiece) {
+                    previousMove = null
+                    _gameState.update {
+                        it.copy(
+                            screenState = ScreenState.PLAYING,
+                            board = savedSession.board,
+                            currentPieces = fittedPieces,
+                            score = savedSession.score,
+                            comboStreak = savedSession.comboStreak,
+                            canUndo = savedSession.canUndo,
+                            isNewHighScore = false,
+                            activeLineClear = null,
+                            activeComboPopup = null,
+                            lastPlacement = null,
+                            hasSavedGame = true
+                        )
+                    }
+                    return
+                } else {
+                    gameSaveRepository.clearSavedGame()
                 }
-                return
             }
         }
 
@@ -219,16 +224,14 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     /**
      * Optional Rewarded Continue (Second Chance).
-     * Clears the central 2x2 board section and deals 3 fresh playable pieces.
+     * Clears the central 4x4 board section (rows 2..5, cols 2..5) and deals 3 fresh playable pieces.
      */
     fun reviveGame() {
+        rewardedAdManager.consumeRevive()
         val currentBoard = _gameState.value.board
-        // Clear central 3x3 cells (rows 2..4, cols 2..4)
-        val clearedRows = mutableSetOf<Int>()
-        val clearedCols = mutableSetOf<Int>()
         var clearedBoard = currentBoard
-        for (r in 2..4) {
-            for (c in 2..4) {
+        for (r in 2..5) {
+            for (c in 2..5) {
                 clearedBoard = clearedBoard.withCell(r, c, null)
             }
         }
@@ -294,7 +297,15 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     fun pauseGame() {
         if (_gameState.value.screenState == ScreenState.PLAYING) {
             soundManager.playButtonClick()
-            _gameState.update { it.copy(screenState = ScreenState.PAUSED) }
+            val current = _gameState.value
+            gameSaveRepository.saveGame(
+                board = current.board,
+                pieces = current.currentPieces,
+                score = current.score,
+                comboStreak = current.comboStreak,
+                canUndo = current.canUndo
+            )
+            _gameState.update { it.copy(screenState = ScreenState.PAUSED, hasSavedGame = true) }
         }
     }
 
@@ -307,7 +318,46 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     fun goToHome() {
         soundManager.playButtonClick()
-        _gameState.update { it.copy(screenState = ScreenState.START) }
+        val current = _gameState.value
+        val isGameOverOrDead = current.screenState == ScreenState.GAME_OVER ||
+                current.currentPieces.isEmpty() ||
+                current.currentPieces.none { !it.isUsed && it.canFit }
+
+        if (isGameOverOrDead) {
+            // Finished match returning to home: reset finished board and tray state
+            previousMove = null
+            gameSaveRepository.clearSavedGame()
+            _gameState.update {
+                it.copy(
+                    screenState = ScreenState.START,
+                    board = Board.EMPTY,
+                    currentPieces = emptyList(),
+                    score = 0,
+                    comboStreak = 0,
+                    canUndo = false,
+                    canRevive = false,
+                    hasSavedGame = false,
+                    activeLineClear = null,
+                    activeComboPopup = null,
+                    lastPlacement = null
+                )
+            }
+        } else {
+            // Live active puzzle returning to home: persist it
+            gameSaveRepository.saveGame(
+                board = current.board,
+                pieces = current.currentPieces,
+                score = current.score,
+                comboStreak = current.comboStreak,
+                canUndo = current.canUndo
+            )
+            _gameState.update {
+                it.copy(
+                    screenState = ScreenState.START,
+                    hasSavedGame = true
+                )
+            }
+        }
     }
 
     fun toggleSound() {
@@ -470,9 +520,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                     val newScore = state.score + result.scoreResult.pointsEarned
                     val currentBest = state.bestScore
                     val isNewBest = newScore > currentBest
+                    val hadAlreadyBeatenBest = state.isNewHighScore
+
                     if (isNewBest) {
                         scoreRepository.saveBestScore(newScore)
-                        soundManager.playNewBest()
+                        if (!hadAlreadyBeatenBest) {
+                            soundManager.playNewBest()
+                        }
                     } else if (newScore / 1000 > state.score / 1000 && newScore > 0) {
                         soundManager.playScoreMilestone()
                     }
@@ -485,7 +539,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                         } else {
                             soundManager.playLineClear()
                         }
-                    } else {
+                    } else if (!isNewBest || hadAlreadyBeatenBest) {
                         soundManager.playPlace()
                     }
 
@@ -546,7 +600,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                                 ComboPopup(result.scoreResult.newStreak, result.scoreResult.comboBonus + result.scoreResult.pointsEarned)
                             } else null,
                             lastPlacement = PlacementAnimation(placedCells),
-                            canUndo = true,
+                            canUndo = !isGameOverFinal,
                             sessionLinesCleared = updatedSessionLines,
                             sessionMaxCombo = updatedSessionCombo,
                             newlyUnlockedAchievements = newlyUnlockedList,

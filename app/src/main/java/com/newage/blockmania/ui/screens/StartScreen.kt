@@ -482,7 +482,7 @@ fun StartScreen(
 
                 // New Game button if an active game already exists
                 if (hasActiveGame) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
                     Button(
                         onClick = onNewGameClick,
                         colors = ButtonDefaults.buttonColors(containerColor = theme.secondaryButton),
@@ -510,7 +510,7 @@ fun StartScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // Competitive Hub Button (Challenges & Missions)
                 Button(
@@ -540,7 +540,7 @@ fun StartScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // How to Play Button
                 Button(

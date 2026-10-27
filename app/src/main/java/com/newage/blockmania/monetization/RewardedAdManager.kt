@@ -83,6 +83,11 @@ class RewardedAdManager {
         onAdDismissed()
     }
 
+    fun consumeRevive() {
+        hasUsedReviveInCurrentSession = true
+        _isAdAvailable.value = false
+    }
+
     fun resetSession() {
         hasUsedReviveInCurrentSession = false
     }

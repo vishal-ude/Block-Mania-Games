@@ -8,6 +8,7 @@ import com.newage.blockmania.model.BlockShape
 import com.newage.blockmania.model.Board
 import com.newage.blockmania.model.DailyChallenge
 import com.newage.blockmania.model.Piece
+import com.newage.blockmania.model.ScreenState
 import com.newage.blockmania.monetization.RewardedAdManager
 import com.newage.blockmania.theme.GameTheme
 import org.junit.Assert.assertEquals
@@ -159,22 +160,66 @@ class CompetitiveAndProgressionTest {
         val testPiece = Piece(shape = BlockShape.SQUARE_2X2, color = BlockColor.CYAN)
         assertFalse("Piece cannot fit on full board", GameEngine.canPieceFitAnywhere(blockedBoard, testPiece))
 
-        // Perform revive clear on center 3x3 (rows 2..4, cols 2..4)
+        // Perform revive clear on center 4x4 (rows 2..5, cols 2..5)
         var clearedBoard = blockedBoard
-        for (r in 2..4) {
-            for (c in 2..4) {
+        for (r in 2..5) {
+            for (c in 2..5) {
                 clearedBoard = clearedBoard.withCell(r, c, null)
             }
         }
 
         // Verify cells are empty
-        for (r in 2..4) {
-            for (c in 2..4) {
+        for (r in 2..5) {
+            for (c in 2..5) {
                 assertTrue("Cell ($r, $c) should be empty after revive", clearedBoard.isEmpty(r, c))
             }
         }
 
         // Now test piece fits in the cleared center!
         assertTrue("Square piece must fit in cleared center", GameEngine.canPieceFitAnywhere(clearedBoard, testPiece))
+    }
+
+    @Test
+    fun testDeadGameValidationPreventsResume() {
+        // Full board: no moves possible
+        var fullBoard = Board.EMPTY
+        for (r in 0 until BOARD_SIZE) {
+            for (c in 0 until BOARD_SIZE) {
+                fullBoard = fullBoard.withCell(r, c, BlockColor.GOLD)
+            }
+        }
+
+        val deadPieces = listOf(
+            Piece(shape = BlockShape.SQUARE_2X2, color = BlockColor.CORAL, isUsed = false, canFit = false),
+            Piece(shape = BlockShape.LINE_3_H, color = BlockColor.CYAN, isUsed = false, canFit = false)
+        )
+
+        val unused = deadPieces.filter { !it.isUsed }
+        val canFitAnywhere = unused.any { GameEngine.canPieceFitAnywhere(fullBoard, it) }
+
+        // Must evaluate to false: no moves possible
+        assertFalse("Dead pieces must not fit on full board", canFitAnywhere)
+
+        // Evaluate hasActiveGame condition
+        val screenState = ScreenState.START
+        val hasSavedGame = false
+        val hasActiveGame = hasSavedGame || (
+            screenState != ScreenState.GAME_OVER &&
+            deadPieces.isNotEmpty() &&
+            deadPieces.any { !it.isUsed && it.canFit }
+        )
+
+        assertFalse("hasActiveGame must be false when no pieces can fit", hasActiveGame)
+    }
+
+    @Test
+    fun testRewardedAdManagerConsumeRevive() {
+        val manager = RewardedAdManager()
+        manager.isMonetizationEnabled = true
+        manager.preloadRewardedAd(null)
+
+        assertTrue("Ad should be available before consumption", manager.canRevive())
+        manager.consumeRevive()
+        assertFalse("Ad must not be available after consumption", manager.canRevive())
     }
 }
